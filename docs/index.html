@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+<style>
+
+	.error
+	{
+		color:red;
+	}
+	
+	.c1
+	{
+		border: 2px red ridge;
+	}
+	
+	.c2
+	{
+		border: 2px #34F04A ridge;
+	}
+	
+</style>	
+</head>
+
+<body>
+	
+	<div class="container">
+	<div class="row">
+	
+		<div class="col-sm-4 mx-auto">
+			
+			<form action="" id="form1">
+				
+				<input type="text" name="myName" id="myName" placeholder="Ingresa tu nombre" class="form-control">
+				<br>
+				<input type="text" name="email" id="email" placeholder="Ingresa Email" class="form-control">
+				<br>
+				<input type="text" name="pass" id="pass" placeholder="Ingresa tu contraseña" class="form-control">
+				<br>
+				<input type="text" name="cpass" id="cpass" placeholder="Confirma tu contraseña" class="form-control">
+				<br>
+				<input type="text" name="age" id="age" placeholder="Ingresa tu edad" class="form-control">
+				<br>
+				<input type="text" name="st" id="st" placeholder="Ingresa tu numero" class="form-control">
+				<br>
+				<input type="text" name="dob" id="dob" placeholder="Fecha de nacimiento año-mes-dia" class="form-control">
+				<br>
+				<input type="submit" value="Enviar" class="btn btn-info btn-block">
+			</form>
+			<h2 id="summary"></h2>
+		</div>
+		
+	</div>
+	
+	</div>
+	
+	
+<script src="jqueryy.js"></script>
+<script src="jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="jquery-validation/dist/additional-methods.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			
+			$.validator.addMethod("StrongPassword",function(value){
+				return /(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/.test(value);
+			},"Please Enter Strong Password");
+			
+			
+			$("#form1").validate({
+				rules:{
+					myName:{
+						required:true,
+						minlength:3,
+						maxlength:15
+					},
+					email:{
+						required:true,
+						email:true
+					},
+					pass:{
+						required:true,
+						StrongPassword:true
+					},
+					cpass:{
+						required:true,
+						equalTo:"#pass"
+					},
+					age:{
+						required:true,
+						min:10,
+						max:40
+					},
+					st:{
+						required:true,
+//						step:20
+						digits:true
+					},
+					dob:{
+						required:true,
+						date:true
+					}
+				},
+				highlight:function(element){
+					$(element).addClass("c1");
+					$(element).removeClass("c2");
+				},
+				unhighlight:function(element){
+					$(element).addClass("c2");
+				},
+				invalidHandler:function(element){
+					var validator = $("#form1").validate();
+					$("#summary").text(validator.numberOfInvalids() + " fields are invalid..");
+				},
+				messages:{
+					myName:{
+						required:"Name is mandatory",
+						minlength:"3 Characters must"
+					},
+					email:{
+						required:"Email is mandatory",
+						email:"Invalid Email"
+					},
+					pass:{
+						required:"Password is mandatory"
+					},
+					cpass:{
+						required:"Confirm Password is mandatory",
+						equalTo:"Both Passwords are not identical"
+					}
+				}
+			});
+		});
+	
+	</script>
+</body>
+</html>
